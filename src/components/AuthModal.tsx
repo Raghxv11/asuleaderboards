@@ -56,8 +56,10 @@ const AuthModal: React.FC<AuthModalProps> = ({
 
     if (activeTab === 'login') {
       onLogin(email, password);
+      onClose();
     } else {
       onSignUp(email, password, name);
+      onClose();
     }
   };
 
