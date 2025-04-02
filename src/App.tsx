@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -9,6 +8,7 @@ import { AppProvider, useApp } from './context/AppContext';
 import Navbar from './components/Navbar';
 import AuthModal from './components/AuthModal';
 import Home from './pages/Home';
+import Jacked from './pages/Jacked';
 import Leaderboard from './pages/Leaderboard';
 import Profile from './pages/Profile';
 import NotFound from './pages/NotFound';
@@ -41,6 +41,7 @@ const AppContent = () => {
       <main className="min-h-screen">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/jacked" element={<Jacked />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFound />} />
@@ -48,7 +49,7 @@ const AppContent = () => {
       </main>
       
       <footer className="bg-gray-50 text-center py-6 mt-12">
-        <p className="text-gray-600">© {new Date().getFullYear()} SwipesOfGlory - Rate your fitness journey</p>
+        <p className="text-gray-600">© {new Date().getFullYear()} ASU Leaderboards</p>
       </footer>
     </>
   );

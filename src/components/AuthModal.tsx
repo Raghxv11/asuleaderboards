@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import {
   Dialog,
@@ -45,8 +44,8 @@ const AuthModal: React.FC<AuthModalProps> = ({
       return;
     }
 
-    if (!email.includes('@')) {
-      toast.error('Please enter a valid email address');
+    if (!email.includes('@') || !email.endsWith('.edu')) {
+      toast.error('Please enter a valid .edu email address');
       return;
     }
 
@@ -76,7 +75,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold gradient-text text-center">
-            {activeTab === 'login' ? 'Welcome Back!' : 'Join SwipesOfGlory'}
+            {activeTab === 'login' ? 'Welcome Back!' : 'Join ASU Leaderboards'}
           </DialogTitle>
           <DialogDescription className="text-center">
             {activeTab === 'login' 
@@ -110,7 +109,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="your@email.com"
+                  placeholder="youremail@asu.edu"
                   disabled={isLoading}
                 />
               </div>
@@ -159,7 +158,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="your@email.com"
+                  placeholder="youremail@asu.edu"
                   disabled={isLoading}
                 />
               </div>

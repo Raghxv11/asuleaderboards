@@ -1,39 +1,38 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 40 30% 98%;
+    --foreground: 355 60% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 355 60% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 355 60% 15%;
 
-    --primary: 262.1 83.3% 57.8%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 355 80% 35%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 45 100% 55%;
+    --secondary-foreground: 355 60% 20%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 45 30% 94%;
+    --muted-foreground: 355 30% 40%;
 
-    --accent: 349 89% 70%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 45 100% 55%;
+    --accent-foreground: 355 60% 15%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 45 20% 85%;
+    --input: 45 20% 85%;
+    --ring: 355 80% 35%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
   }
 }
 
@@ -44,16 +43,46 @@
 
   body {
     @apply bg-background text-foreground;
+    background-image: 
+      radial-gradient(at 100% 0%, hsla(45, 100%, 55%, 0.18) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, hsla(355, 80%, 35%, 0.18) 0px, transparent 50%);
+    background-attachment: fixed;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold;
   }
 }
 
 @layer components {
   .gradient-text {
-    @apply text-transparent bg-clip-text bg-gradient-to-r from-app-red to-app-purple;
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-app-maroon to-app-gold font-extrabold;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .maroon-button {
+    @apply bg-app-maroon text-white font-bold py-3 px-8 rounded-full 
+    hover:opacity-95 transition-all shadow-md hover:shadow-lg hover:translate-y-[-2px];
+  }
+  
+  .gold-button {
+    @apply bg-app-gold text-app-maroon font-bold py-3 px-8 rounded-full 
+    hover:opacity-95 transition-all shadow-md hover:shadow-lg hover:translate-y-[-2px];
   }
   
   .app-button {
-    @apply bg-gradient-to-r from-app-red to-app-purple text-white font-semibold py-2 px-6 rounded-full hover:opacity-90 transition-opacity;
+    @apply bg-gradient-to-r from-app-maroon to-app-gold text-white font-bold py-3 px-8 rounded-full 
+    hover:opacity-95 transition-all shadow-md hover:shadow-lg hover:translate-y-[-2px];
+  }
+
+  .gold-card {
+    @apply bg-white shadow-lg rounded-2xl overflow-hidden border-2 border-app-gold;
+    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+  }
+  
+  .maroon-card {
+    @apply bg-white shadow-lg rounded-2xl overflow-hidden border-2 border-app-maroon;
+    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
   }
 
   .card-container {
@@ -62,14 +91,49 @@
     max-width: 400px;
     height: 450px;
     perspective: 1000px;
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
   }
 
   .swipe-card {
-    @apply bg-white shadow-lg rounded-xl overflow-hidden;
+    @apply bg-white shadow-lg rounded-2xl overflow-hidden;
     position: relative;
     width: 100%;
     height: 100%;
     transform-style: preserve-3d;
     transition: transform 0.3s ease-out;
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 
+      0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -2px rgba(0, 0, 0, 0.05),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+  
+  .glass-container {
+    @apply bg-white bg-opacity-70 backdrop-blur-md rounded-2xl border border-opacity-40;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+    border-color: rgba(255, 198, 39, 0.3);
+  }
+  
+  .maroon-glass {
+    @apply bg-white bg-opacity-70 backdrop-blur-md rounded-2xl border border-opacity-40;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+    border-color: rgba(140, 29, 64, 0.3);
+  }
+  
+  .maroon-section {
+    @apply bg-app-maroon text-white p-8 rounded-2xl;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+  }
+  
+  .gold-section {
+    @apply bg-app-gold text-app-maroon p-8 rounded-2xl;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+  }
+  
+  .gradient-divider {
+    height: 3px;
+    background: linear-gradient(to right, #8C1D40, #FFC627);
+    border-radius: 3px;
+    margin: 1.5rem 0;
   }
 }

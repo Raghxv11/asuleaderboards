@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -64,10 +63,13 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				app: {
-					red: '#FF6B6B',
-					purple: '#8B5CF6',
-					pink: '#D946EF',
-					gradient: 'linear-gradient(to right, #FF6B6B, #8B5CF6)',
+					maroon: '#8C1D40',
+					gold: '#FFC627',
+					darkgold: '#E8B00F',
+					burgundy: '#63001C',
+					copper: '#B95915',
+					white: '#FFFFFF',
+					gradient: 'linear-gradient(to right, #8C1D40, #FFC627)',
 				},
 			},
 			borderRadius: {

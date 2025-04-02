@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/context/AppContext';
@@ -19,13 +18,14 @@ const Profile = () => {
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="max-w-md mx-auto">
-        <h1 className="text-3xl font-bold gradient-text text-center mb-6">
+        <h1 className="text-4xl font-extrabold gradient-text text-center mb-4">
           Your Profile
         </h1>
+        <div className="gradient-divider w-32 mx-auto mb-8"></div>
         
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-xl">Edit Your Profile</CardTitle>
+        <div className="maroon-glass mb-10">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-2xl text-gray-800">Edit Your Profile</CardTitle>
           </CardHeader>
           <CardContent>
             {currentUser && (
@@ -40,22 +40,36 @@ const Profile = () => {
               />
             )}
           </CardContent>
-        </Card>
+        </div>
         
-        <div className="mt-8">
-          <h2 className="text-xl font-semibold mb-4">Your Stats</h2>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-white rounded-lg shadow p-4 text-center">
-              <p className="text-gray-600 text-sm">Right Swipes</p>
-              <p className="text-2xl font-bold gradient-text">
+        <div className="mt-12">
+          <h2 className="text-2xl font-bold mb-6 text-center text-app-maroon">Your Stats</h2>
+          <div className="grid grid-cols-2 gap-6">
+            <div className="maroon-section text-center">
+              <p className="text-sm mb-2 opacity-80">Right Swipes</p>
+              <p className="text-3xl font-bold">
                 {currentUser?.swipeRightReceived || 0}
               </p>
             </div>
-            <div className="bg-white rounded-lg shadow p-4 text-center">
-              <p className="text-gray-600 text-sm">Total Votes</p>
-              <p className="text-2xl font-bold gradient-text">
+            <div className="gold-section text-center">
+              <p className="text-sm mb-2 opacity-80">Total Votes</p>
+              <p className="text-3xl font-bold">
                 {currentUser?.totalVotes || 0}
               </p>
+            </div>
+          </div>
+        </div>
+        
+        <div className="mt-12 glass-container p-6 text-center">
+          <h3 className="text-xl font-bold mb-4 text-gray-800">Current Rating</h3>
+          <div className="flex justify-center items-center space-x-4">
+            <div className="text-5xl font-bold gradient-text">
+              {currentUser?.swipeRightReceived && currentUser?.totalVotes 
+                ? Math.round((currentUser.swipeRightReceived / currentUser.totalVotes) * 100) 
+                : 0}%
+            </div>
+            <div className="text-gray-600">
+              Jacked Rating
             </div>
           </div>
         </div>

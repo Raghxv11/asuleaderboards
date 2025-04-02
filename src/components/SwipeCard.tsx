@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 
@@ -47,8 +46,8 @@ const SwipeCard: React.FC<SwipeCardProps> = ({ profile, onSwipeLeft, onSwipeRigh
             alt={profile.name}
             className="w-full h-3/4 object-cover"
           />
-          <div className="absolute bottom-0 w-full p-4 bg-white">
-            <h3 className="text-xl font-bold">{profile.name}</h3>
+          <div className="absolute bottom-0 w-full p-4 bg-white border-t-2 border-app-gold">
+            <h3 className="text-xl font-bold text-app-maroon">{profile.name}</h3>
             <p className="text-gray-600 line-clamp-2">{profile.bio || "No bio available"}</p>
           </div>
         </div>
@@ -58,18 +57,18 @@ const SwipeCard: React.FC<SwipeCardProps> = ({ profile, onSwipeLeft, onSwipeRigh
         <Button 
           onClick={() => handleSwipe('left')} 
           variant="outline" 
-          className="rounded-full h-16 w-16 border-2 border-app-red flex items-center justify-center"
+          className="rounded-full h-16 w-16 border-2 border-app-maroon flex items-center justify-center"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-8 w-8 text-app-red">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-8 w-8 text-app-maroon">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </Button>
         <Button 
           onClick={() => handleSwipe('right')} 
           variant="outline" 
-          className="rounded-full h-16 w-16 border-2 border-green-500 flex items-center justify-center"
+          className="rounded-full h-16 w-16 border-2 border-app-gold flex items-center justify-center"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-8 w-8 text-green-500">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-8 w-8 text-app-gold">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
         </Button>
