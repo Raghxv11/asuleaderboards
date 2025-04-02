@@ -111,7 +111,7 @@ const Home = () => {
               <div className="absolute top-0 right-0 w-20 h-20 bg-app-gold opacity-20 rounded-bl-full"></div>
               <h3 className="text-2xl font-bold mb-3">Who's More Cracked</h3>
               <p className="text-gray-600 mb-6">
-                Coming soon! Rate ASU gamers based on their skills. Who has the best aim and reflexes?
+                Coming soon! Who's more cracked?
               </p>
               <Button disabled className="app-button opacity-50 hover:opacity-50">
                 Coming Soon
