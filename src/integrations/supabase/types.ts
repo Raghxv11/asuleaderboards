@@ -15,6 +15,7 @@ export type Database = {
           created_at: string
           id: string
           image_url: string | null
+          image_urls: string[] | null
           name: string
         }
         Insert: {
@@ -22,6 +23,7 @@ export type Database = {
           created_at?: string
           id: string
           image_url?: string | null
+          image_urls?: string[] | null
           name: string
         }
         Update: {
@@ -29,6 +31,7 @@ export type Database = {
           created_at?: string
           id?: string
           image_url?: string | null
+          image_urls?: string[] | null
           name?: string
         }
         Relationships: []
@@ -76,6 +79,7 @@ export type Database = {
           id: string
           name: string
           image_url: string
+          image_urls: string[]
           bio: string
           swipe_right_percentage: number
           total_votes: number

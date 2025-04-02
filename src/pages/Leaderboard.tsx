@@ -22,7 +22,7 @@ const Leaderboard = () => {
         
         <div className="mb-6 text-center">
           <Button asChild className="maroon-button">
-            <Link to="/">Back to Categories</Link>
+            <Link to="/">Back to Home</Link>
           </Button>
         </div>
         
@@ -32,7 +32,8 @@ const Leaderboard = () => {
             <LeaderboardTable users={leaderboard} isLoading={isDataLoading} />
           </div>
           <p className="text-sm mt-4 opacity-80 text-white">
-            Rankings are calculated based on the percentage of right swipes received
+            Rankings are calculated based on the percentage of right swipes received. 
+            {isDataLoading ? "Updating leaderboard..." : "Leaderboard updates in real-time as votes come in."}
           </p>
         </div>
         

@@ -34,6 +34,7 @@ const Profile = () => {
                   name: currentUser.name,
                   bio: currentUser.bio,
                   imageUrl: currentUser.imageUrl,
+                  imageUrls: currentUser.imageUrls || [currentUser.imageUrl].filter(Boolean),
                 }}
                 onSave={updateProfile}
                 isLoading={isAuthLoading}

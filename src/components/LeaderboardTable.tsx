@@ -6,6 +6,7 @@ export interface LeaderboardUser {
   rank: number;
   name: string;
   imageUrl: string;
+  imageUrls?: string[];
   swipeRightPercentage: number;
   totalVotes: number;
 }
