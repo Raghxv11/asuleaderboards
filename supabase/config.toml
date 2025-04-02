@@ -1,0 +1,6 @@
+
+project_id = "pvbzzlknglrrbudyckgl"
+
+[storage]
+[storage.profile-images]
+public = true
