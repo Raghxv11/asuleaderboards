@@ -213,8 +213,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           totalVotes: user.total_votes
         })));
         
-        // Toast notification to confirm leaderboard updated
-        toast.success(`Leaderboard updated with ${data.length} profiles`);
       }
     } catch (error: any) {
       console.error('Error fetching leaderboard:', error);
