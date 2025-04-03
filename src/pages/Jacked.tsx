@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useApp } from '@/context/AppContext';
 import SwipeCard from '@/components/SwipeCard';
 import { Button } from '@/components/ui/button';
@@ -6,18 +6,59 @@ import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 
 const Jacked = () => {
-  const { getNextProfile, swipeLeft, swipeRight, isLoggedIn } = useApp();
+  const { getNextProfile, swipeLeft, swipeRight, isLoggedIn, users, currentUser } = useApp();
   const [noMoreProfiles, setNoMoreProfiles] = useState(false);
-  const [currentProfile, setCurrentProfile] = useState(getNextProfile());
   const [anonymousSwipeCount, setAnonymousSwipeCount] = useState(0);
+  const [seenProfileIds, setSeenProfileIds] = useState(new Set<string>());
+  const [currentProfile, setCurrentProfile] = useState<any>(null);
   
+  // On initial load, get the first profile
   useEffect(() => {
-    // Reset anonymous swipe count when user logs in
+    if (users.length > 0 && !currentProfile) {
+      const nextUnseen = getNextUnseenProfile();
+      setCurrentProfile(nextUnseen);
+    }
+  }, [users]);
+  
+  // Reset anonymous swipe count when user logs in
+  useEffect(() => {
     if (isLoggedIn) {
       setAnonymousSwipeCount(0);
     }
   }, [isLoggedIn]);
 
+  // Function to get the next unseen profile
+  const getNextUnseenProfile = () => {
+    // Log current state for debugging
+    console.log('Seen profiles:', Array.from(seenProfileIds));
+    console.log('Current user:', currentUser?.id);
+    console.log('Available profiles (all):', users.map(u => u.id));
+    
+    const availableProfiles = users.filter(user => {
+      // Skip if we've already seen this profile
+      if (seenProfileIds.has(user.id)) {
+        console.log(`Filtering out seen profile: ${user.id}`);
+        return false;
+      }
+      
+      // Skip if this is the current logged-in user
+      if (currentUser && user.id === currentUser.id) {
+        console.log(`Filtering out current user: ${user.id}`);
+        return false;
+      }
+      
+      return true;
+    });
+    
+    console.log('Available profiles (filtered):', availableProfiles.map(u => u.id));
+    
+    if (availableProfiles.length === 0) {
+      return null;
+    }
+    
+    return availableProfiles[0];
+  };
+  
   const handleSwipeLeft = () => {
     if (currentProfile) {
       // Track anonymous swipes and show a message after a few swipes
@@ -30,10 +71,21 @@ const Jacked = () => {
         }
       }
       
+      // Record the swipe
       swipeLeft(currentProfile.id);
-      const nextProfile = getNextProfile();
-      if (nextProfile) {
-        setCurrentProfile(nextProfile);
+      
+      // Mark this profile as seen
+      setSeenProfileIds(prev => {
+        const newSet = new Set(prev);
+        newSet.add(currentProfile.id);
+        return newSet;
+      });
+      
+      // Find the next unseen profile
+      const nextUnseen = getNextUnseenProfile();
+      
+      if (nextUnseen) {
+        setCurrentProfile(nextUnseen);
       } else {
         setNoMoreProfiles(true);
         setCurrentProfile(null);
@@ -53,10 +105,21 @@ const Jacked = () => {
         }
       }
       
+      // Record the swipe
       swipeRight(currentProfile.id);
-      const nextProfile = getNextProfile();
-      if (nextProfile) {
-        setCurrentProfile(nextProfile);
+      
+      // Mark this profile as seen
+      setSeenProfileIds(prev => {
+        const newSet = new Set(prev);
+        newSet.add(currentProfile.id);
+        return newSet;
+      });
+      
+      // Find the next unseen profile
+      const nextUnseen = getNextUnseenProfile();
+      
+      if (nextUnseen) {
+        setCurrentProfile(nextUnseen);
       } else {
         setNoMoreProfiles(true);
         setCurrentProfile(null);

@@ -67,7 +67,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [isDataLoading, setIsDataLoading] = useState<boolean>(true);
   const [users, setUsers] = useState<UserProfile[]>([]);
   const [leaderboard, setLeaderboard] = useState<LeaderboardUser[]>([]);
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [seenProfiles, setSeenProfiles] = useState<Set<string>>(new Set());
   
   // Initialize auth state from Supabase
   useEffect(() => {
@@ -82,9 +82,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         if (currentSession?.user) {
           setTimeout(() => {
             fetchUserProfile(currentSession.user.id);
+            fetchPreviouslySwipedProfiles(currentSession.user.id);
           }, 0);
         } else {
           setCurrentUser(null);
+          setSeenProfiles(new Set()); // Clear seen profiles when logged out
         }
       }
     );
@@ -97,6 +99,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       
       if (currentSession?.user) {
         fetchUserProfile(currentSession.user.id);
+        fetchPreviouslySwipedProfiles(currentSession.user.id);
       }
     });
     
@@ -108,6 +111,26 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       subscription.unsubscribe();
     };
   }, []);
+  
+  // Fetch previously swiped profiles for logged-in users
+  const fetchPreviouslySwipedProfiles = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('swipes')
+        .select('profile_id')
+        .eq('voter_id', userId);
+        
+      if (error) throw error;
+      
+      if (data && data.length > 0) {
+        // Add all previously swiped profile IDs to the seen profiles set
+        const swipedIds = data.map(swipe => swipe.profile_id);
+        setSeenProfiles(prev => new Set([...prev, ...swipedIds]));
+      }
+    } catch (error) {
+      console.error('Error fetching previously swiped profiles:', error);
+    }
+  };
   
   // Fetch user profile from Supabase
   const fetchUserProfile = async (userId: string) => {
@@ -259,7 +282,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       
       if (error) throw error;
       
-      toast.success('Account created successfully!');
+      toast.success('Confirmation email sent!');
     } catch (error: any) {
       toast.error(error.message || 'Failed to create account');
       console.error('Signup error:', error);
@@ -418,6 +441,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Swipe functionality
   const swipeLeft = async (userId: string) => {
     try {
+      // Add profile to seen profiles
+      setSeenProfiles(prev => new Set([...prev, userId]));
+      
       // Generate a valid UUID for anonymous users
       const anonymousId = isLoggedIn ? supabaseUser!.id : crypto.randomUUID();
       
@@ -436,9 +462,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       if (!isLoggedIn) {
         toast.success('Vote recorded!'); // Debug toast
       }
-        
-      // Move to next profile
-      setCurrentIndex(prev => prev + 1);
       
       // Refresh leaderboard data
       setTimeout(() => {
@@ -457,6 +480,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const swipeRight = async (userId: string) => {
     try {
+      // Add profile to seen profiles
+      setSeenProfiles(prev => new Set([...prev, userId]));
+      
       // Generate a valid UUID for anonymous users
       const anonymousId = isLoggedIn ? supabaseUser!.id : crypto.randomUUID();
       
@@ -475,9 +501,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       if (!isLoggedIn) {
         toast.success('Vote recorded!'); // Debug toast
       }
-        
-      // Move to next profile
-      setCurrentIndex(prev => prev + 1);
       
       // Refresh leaderboard data
       setTimeout(() => {
@@ -496,15 +519,25 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const getNextProfile = (): UserProfile | null => {
     // Filter out the current user and profiles we've already swiped on
-    const filteredUsers = users.filter(u => 
-      currentUser ? u.id !== currentUser.id : true
-    );
+    const filteredUsers = users.filter(u => {
+      // Filter out current user
+      if (currentUser && u.id === currentUser.id) {
+        return false;
+      }
+      
+      // Filter out profiles already seen in this session
+      if (seenProfiles.has(u.id)) {
+        return false;
+      }
+      
+      return true;
+    });
     
-    if (currentIndex >= filteredUsers.length) {
+    if (filteredUsers.length === 0) {
       return null;
     }
     
-    return filteredUsers[currentIndex];
+    return filteredUsers[0];
   };
 
   return (
